@@ -10,25 +10,35 @@ class FinancialDataView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
 
-        # news_data = requests.get(
-        #     'https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=ece95912ea3746e68826c8eb30e2eb66')
-        # context['financialdata'] = json.dumps(news_data.json(),
-        #                                  sort_keys=True,
-        #                                  indent=4)
-        url = "https://yahoo-finance-low-latency.p.rapidapi.com/v8/finance/chart/AAPL"
-
-        querystring = {"comparisons":"MSFT,^VIX","events":"div,split"}
+        querystring = {"symbol":"AMRN","region":"US"}
 
         headers = {
             'x-rapidapi-key': "098911c84amsh858307b7eaebf6cp1e62dfjsnd559913a493e",
-            'x-rapidapi-host': "yahoo-finance-low-latency.p.rapidapi.com"
+            'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
             }
 
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        context['financialdata'] = json.dumps(response.json(),
-                                         sort_keys=True,
-                                         indent=4)
-        #context['financialdata'] = response.json()
+        response = requests.request("GET", url, headers=headers, params=querystring).json()
+
+        context['marketCap'] = response['price']['marketCap']['raw']
+
         return context
+
+# def test_func():
+#     url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
+
+#     querystring = {"symbol":"AMRN","region":"US"}
+
+#     headers = {
+#         'x-rapidapi-key': "098911c84amsh858307b7eaebf6cp1e62dfjsnd559913a493e",
+#         'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
+#         }
+
+#     response = requests.request("GET", url, headers=headers, params=querystring).json()
+#     #obj = response.json()
+#     print(response['price']['marketCap']['raw'])
+
+# test_func()
+
 
