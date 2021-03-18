@@ -75,37 +75,6 @@ const Auto = () => {
     FinancialDataService.create({'companyName': search})
     .then(res => console.log(res))
     .catch(error => console.error(error))
-
-
-    // axios({
-    //   method: "post",
-    //   url: "http://endpointurl",
-    //   withCredentials: true,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'X-CSRF-TOKEN': localStorage.getItem('xsrftoken'),
-    //     'csrftoken': localStorage.getItem('csrftoken')
-    //     // 'XSRF-TOKEN': localStorage.getItem('userToken')
-    //   },
-    //   data: {
-    //     name: this.state.name,
-    //   }
-    // }).then(res => {
-    //       console.log(res);
-    //       console.log(res.data);
-    // })
-    
-    // fetch('http://127.0.0.1:8000/financialdata/', {
-    //   credentials: 'include',
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'X-CSRFToken': csrftoken
-    //   },
-    //   body: {'companyName': "example"}
-    //  })
     }
   
 

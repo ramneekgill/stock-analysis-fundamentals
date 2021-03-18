@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const csrftoken = Cookies.get('csrftoken');
 
 export default axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
     "Content-type": "application/json",
     'X-CSRFToken': csrftoken
