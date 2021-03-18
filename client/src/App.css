@@ -29,7 +29,7 @@ input {
 
 .autoContainer {
   position: absolute;
-  right: 10px;
+  right: 200px;
   top: 52px;
   width: 620px;
   background-color: #e7eff9;
@@ -38,6 +38,7 @@ input {
 
 .option {
   display: flex;
+  position: relative;
   justify-content: space-between;
   padding: 15px;
   height: 30px;
@@ -83,6 +84,14 @@ span {
   display: flex;
 }
 
-.flex-column {
+/* .flex-column {
   flex-direction: column;
+} */
+
+.button {
+  height: 42px;
+  width: 170px;
+  border: 1px solid purple;
+  font-size: 18px;
+  text-transform: capitalize;
 }
