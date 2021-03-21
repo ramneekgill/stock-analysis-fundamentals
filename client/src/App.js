@@ -4,7 +4,7 @@ import AutoComplete from './Components/getAutocomplete'
 import FinancialDataService from './Services/financialdata.service'
 import Axios from "axios";
 import Cookies from 'js-cookie';
-var dict = require('./test.json');
+var dict = require('./nyse-listed_json.json');
 
 
 
@@ -72,11 +72,11 @@ const Auto = () => {
     // .then(res => console.log(res))
     // .catch(error => console.error(error))
 
-    FinancialDataService.create({'companyName': search})
-    .then(res => console.log(res))
+    FinancialDataService.create({'Symbol': search})
+    .then(res => console.log(res.data))
     .catch(error => console.error(error))
     }
-  
+
 
 
   return (
@@ -105,19 +105,24 @@ const Auto = () => {
             <span className="label">Symbol</span>
           </div>
           {options
+            .slice(0,5)
+            .filter(value => {
+              return value["Symbol"].indexOf("$") === -1
+            })
             .map((value, i) => {
               return (
                 <div
-                  onClick={() => updatePokeDex(value["Company Name"])}
+                  onClick={() => updatePokeDex(value["Symbol"])}
                   className="option"
                   key={i}
                   tabIndex="0"
                 >
                   <span className="company">{value["Company Name"]}</span>
-                  <span className="symbol">{value["ACT Symbol"]}</span>
+                  <span className="symbol">{value["Symbol"]}</span>
                 </div>
               );
-            })}
+            })
+            }
         </div>
       )}
       <input className="button"
