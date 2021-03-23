@@ -6,10 +6,10 @@ function App() {
   return (
     <main className="container">
       <Switch>
-        <Route exact path="/about">
+        <Route path="/about">
           <CompanyAnalysis />
         </Route>
-        <Route exact path="/search">
+        <Route path="/search">
           <SearchPage />
         </Route>
         <Redirect exact from="/" to="/search" />

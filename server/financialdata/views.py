@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 import json
 import requests
 from rest_framework.viewsets import ModelViewSet
@@ -33,12 +33,10 @@ class FinancialDataView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        print("the create function ran")
         # serializer = self.get_serializer(data=request.data)
         # headers = self.get_success_headers(request.data)
         # return Response(request.data, status=status.HTTP_201_CREATED, headers=headers)
         json_data = json.loads(request.body)
-        print(json_data['Symbol'])
         url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
 
         querystring = {"symbol":json_data['Symbol'],"region":"US"}
@@ -48,9 +46,16 @@ class FinancialDataView(TemplateView):
             'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
             }
 
-        response = requests.request("GET", url, headers=headers, params=querystring).json()
+        response = requests.request("GET", url, headers=headers, params=querystring)
         
-        return JsonResponse(response)
+        try:
+            response = JsonResponse(response.json())
+        except:
+            if response.status_code == 200:
+                return HttpResponse("empty")
+
+
+        return response
 
 
 

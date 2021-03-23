@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
 import AutoComplete from './getAutocomplete'
-import FinancialDataService from '../Services/financialdata.service'
+import CompanyAnalysis from './CompanyAnalysis'
 import Cookies from 'js-cookie';
-import {
-  BrowserRouter as Link
-} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
 
 
 
@@ -13,14 +12,24 @@ var dict = require('../nyse-listed_json.json');
 
 
 const Auto = () => {
+  let history = useHistory();
   const [display, setDisplay] = useState(false);
   const [options, setOptions] = useState([]);
   const [search, setSearch] = useState("");
+  const [symbol, setSymbol] = useState("");
   const wrapperRef = useRef(null);
 
   useEffect(() => {
     setOptions(dict);
   }, []);
+
+  useEffect(() => {
+    if (symbol !== "") {
+        history.push("/about", symbol);
+    }
+  }, [symbol]);
+
+
 
   useEffect(() => {
     window.addEventListener("mousedown", handleClickOutside);
@@ -41,29 +50,26 @@ const Auto = () => {
     setDisplay(false);
   };
 
-  const postCompany = () => {
-    const csrftoken = Cookies.get('csrftoken');
-    var responseData = "test";
-    console.log(csrftoken);
-    // Axios.post(`http://127.0.0.1:8000/financialdata/`, {
-    //         'companyName': 'something'
-    //     },
-    //     {
-    //         headers: {
-    //         'Content-Type': 'application/json',
-    //         'X-CSRFToken': csrftoken
-    //         },
-    //         withCredentials: true,
-    //     }
-    // )
-    // .then(res => <CompanyAnalysis companyData=res />)
-    // .catch(error => console.error(error))
+//   const postCompany = () => {
+//         const csrftoken = Cookies.get('csrftoken');
+//         console.log(csrftoken);
+//         // Axios.post(`http://127.0.0.1:8000/financialdata/`, {
+//         //         'companyName': 'something'
+//         //     },
+//         //     {
+//         //         headers: {
+//         //         'Content-Type': 'application/json',
+//         //         'X-CSRFToken': csrftoken
+//         //         },
+//         //         withCredentials: true,
+//         //     }
+//         // )
+//         // .then(res => <CompanyAnalysis companyData=res />)
+//         // .catch(error => console.error(error))
 
-    FinancialDataService.create({'Symbol': search})
-    .then(res => console.log(res))
-
-    }
-
+//         FinancialDataService.create({'Symbol': search})
+//         .then(res => setSymbol(res));
+//     }
 
 
   return (
@@ -115,10 +121,9 @@ const Auto = () => {
       <input className="button"
       type="submit" 
       value="Generate Report" 
-      onClick={() => {postCompany()}}
+      onClick={() => {setSymbol(search)}}
       />
     </div>
-
     
   );
 };
