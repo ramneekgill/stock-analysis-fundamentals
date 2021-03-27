@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import marketCap from './TablePictures/market-cap.png';
 import profit from './TablePictures/cash.svg';
 import cashFlow from './TablePictures/money-in-wallet.png';
+import growth from './TablePictures/financial-graph-arrows-green.svg';
 
 var pictureBox = {
     margin: '20px',
@@ -14,49 +15,65 @@ var pictureBox = {
 };
 
 
+
 const CompanyData = () => {
-    const [financialdata, setFinancialData] = useState("");
+    const [rawFinancialData, setRawFinancialData] = useState("default");
     const [isLoading, setIsLoading] = useState(true);
+    const [riskData, setRiskData] = useState({});
     let history = useHistory();
     const { state : symbol } = history.location;
+    
 
+    
+    
     useEffect(() => {
         FinancialDataService.create({'Symbol': symbol})
         .then(res => {
             if(res.data !== "empty"){
-                setFinancialData(res.data);
+                setRawFinancialData(
+                {
+                marketCapRaw: res.data.price.marketCap['raw'],
+                marketCapFmt: res.data.price.marketCap['fmt'],
+                });
                 setIsLoading(false);
-            } else setFinancialData("empty");
-            
-        });
+            } else {setRawFinancialData("empty")}})
     }, []);
 
-
-
-
-    if( financialdata === "empty") {
+    useEffect(() => {
+        if(rawFinancialData != "default" && rawFinancialData != "empty"){
+            var risk = {};
+            if(rawFinancialData.marketCapRaw < 250000000) risk.marketCapRisk = "Very High";
+            else if(rawFinancialData.marketCapRaw >= 250000000 && rawFinancialData.marketCapRaw <= 2000000000) risk.marketCapRisk = "High";
+            else if(rawFinancialData.marketCapRaw > 2000000000 && rawFinancialData.marketCapRaw <= 10000000000) risk.marketCapRisk = "Medium";
+            else if(rawFinancialData.marketCapRaw > 10000000000) risk.marketCapRisk = "Low";
+            setRiskData(risk);
+        }
+        
+    }, [rawFinancialData]);
+    
+    if( rawFinancialData === "empty") {
         return <h1>Not able to find that Company</h1>
-      } 
+    }
     {return isLoading ? <h1>Loading...</h1> : 
     (
         <div>
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous"></link>
             <h1>Data found</h1>
-            <h2>{financialdata.insiderHolders.holders[0]["name"]}</h2>
+            <h2>Temp</h2>
             <Table striped bordered hover>
                 <thead>
                     <tr>
                     <th></th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>NUMBER</th>
+                    <th>RISK</th>
+                    <th>EXPLANATION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                     <td><img src={marketCap} width="50" height="50"></img><span style={pictureBox}>Market Cap</span></td>
-                    <td>Mark</td>
-                    <td>Otto</td>
+                    <td>{rawFinancialData.marketCapFmt}</td>
+                    <td>{riskData.marketCapRisk}</td>
                     <td>@mdo</td>
                     </tr>
                     <tr>
@@ -66,20 +83,42 @@ const CompanyData = () => {
                     <td>@fat</td>
                     </tr>
                     <tr>
-                    <td><img src={cashFlow} width="50" height="50"></img><span style={pictureBox}>Cash Flow History</span></td>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
+                    <td><img src={growth} width="50" height="50"></img><span style={pictureBox}>Growth</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
                     </tr>
                     <tr>
-                    <td><img src={marketCap} width="50" height="50"></img><span style={pictureBox}>Growth</span></td>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
+                    <td><img src={profit} width="50" height="50"></img><span style={pictureBox}>Price-to-Earnings Ratio</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
                     </tr>
                     <tr>
-                    <td><img src={marketCap} width="50" height="50"></img><span style={pictureBox}>Debt to Equity</span></td>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
+                    <td><img src={profit} width="50" height="50"></img><span style={pictureBox}>Price-to-Book Ratio</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
                     </tr>
+                    <tr>
+                    <td><img src={profit} width="50" height="50"></img><span style={pictureBox}>Debt-to-Equity Ratio</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    </tr>
+                    <tr>
+                    <td><img src={profit} width="50" height="50"></img><span style={pictureBox}>Free Cash Flow</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    </tr>
+                    <tr>
+                    <td><img src={profit} width="50" height="50"></img><span style={pictureBox}>Price-to-Earnings Growth Ratio</span></td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    </tr>
+
                 </tbody>
             </Table>
         </div>
