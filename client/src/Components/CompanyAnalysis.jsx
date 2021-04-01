@@ -29,34 +29,27 @@ const CompanyData = () => {
     useEffect(() => {
         FinancialDataService.create({'Symbol': symbol})
         .then(res => {
-            console.log(res.data);
+            console.log(res);
             if(res.data !== "empty"){
-                setRawFinancialData(
-                {
-                marketCapRaw: res.data.price.marketCap['raw'],
-                marketCapFmt: res.data.price.marketCap['fmt'],
-                PERatioRaw: res.data.summaryDetail.trailingPE['raw'],
-                PERatioFmt: res.data.summaryDetail.trailingPE['fmt'],
-
-                });
+                setRawFinancialData(res.data);
                 setIsLoading(false);
             } else {setRawFinancialData("empty")}})
     }, []);
 
-    useEffect(() => {
-        if(rawFinancialData != "default" && rawFinancialData != "empty"){
-            var risk = {};
+    // useEffect(() => {
+    //     if(rawFinancialData != "default" && rawFinancialData != "empty"){
+    //         var risk = {};
 
-            //Risk data for Market Cap
-            if(rawFinancialData.marketCapRaw < 250000000) risk.marketCapRisk = "Very High";
-            else if(rawFinancialData.marketCapRaw >= 250000000 && rawFinancialData.marketCapRaw <= 2000000000) risk.marketCapRisk = "High";
-            else if(rawFinancialData.marketCapRaw > 2000000000 && rawFinancialData.marketCapRaw <= 10000000000) risk.marketCapRisk = "Medium";
-            else if(rawFinancialData.marketCapRaw > 10000000000) risk.marketCapRisk = "Low";
+    //         //Risk data for Market Cap
+    //         if(rawFinancialData.marketCapRaw < 250000000) risk.marketCapRisk = "Very High";
+    //         else if(rawFinancialData.marketCapRaw >= 250000000 && rawFinancialData.marketCapRaw <= 2000000000) risk.marketCapRisk = "High";
+    //         else if(rawFinancialData.marketCapRaw > 2000000000 && rawFinancialData.marketCapRaw <= 10000000000) risk.marketCapRisk = "Medium";
+    //         else if(rawFinancialData.marketCapRaw > 10000000000) risk.marketCapRisk = "Low";
 
-            setRiskData(risk);
-        }
+    //         setRiskData(risk);
+    //     }
         
-    }, [rawFinancialData]);
+    // }, [rawFinancialData]);
     
     if( rawFinancialData === "empty") {
         return <h1>Not able to find that Company</h1>
@@ -79,8 +72,8 @@ const CompanyData = () => {
                 <tbody>
                     <tr>
                     <td><img src={marketCap} width="50" height="50"></img><span style={pictureBox}>Market Cap</span></td>
-                    <td>{rawFinancialData.marketCapFmt}</td>
-                    <td>{riskData.marketCapRisk}</td>
+                    <td>placeholder</td>
+                    <td>placeholder</td>
                     <td>@mdo</td>
                     </tr>
                     <tr>
