@@ -78,6 +78,7 @@ class FinancialDataView(TemplateView):
         # print(ms_response['Expanded']['rows'][1]['datum'][10])
         # print(type(ms_response['Collapsed']['rows'][1]['datum'][10]))
         company_valuation['Summary'] = yf_response['summaryProfile']['longBusinessSummary']
+        company_valuation['company_name'] = yf_response['price']['shortName']
         company_valuation['MarketCap_Raw'] = yf_response['price']['marketCap']['raw']
         company_valuation['MarketCap_Fmt'] = yf_response['price']['marketCap']['fmt']
         company_valuation['P/E_Company'] = round(float(ms_response['Collapsed']['rows'][1]['datum'][10]), 2) 
