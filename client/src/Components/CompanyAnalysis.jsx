@@ -29,11 +29,15 @@ const CompanyData = () => {
     useEffect(() => {
         FinancialDataService.create({'Symbol': symbol})
         .then(res => {
+            console.log(res.data);
             if(res.data !== "empty"){
                 setRawFinancialData(
                 {
                 marketCapRaw: res.data.price.marketCap['raw'],
                 marketCapFmt: res.data.price.marketCap['fmt'],
+                PERatioRaw: res.data.summaryDetail.trailingPE['raw'],
+                PERatioFmt: res.data.summaryDetail.trailingPE['fmt'],
+
                 });
                 setIsLoading(false);
             } else {setRawFinancialData("empty")}})
@@ -42,10 +46,13 @@ const CompanyData = () => {
     useEffect(() => {
         if(rawFinancialData != "default" && rawFinancialData != "empty"){
             var risk = {};
+
+            //Risk data for Market Cap
             if(rawFinancialData.marketCapRaw < 250000000) risk.marketCapRisk = "Very High";
             else if(rawFinancialData.marketCapRaw >= 250000000 && rawFinancialData.marketCapRaw <= 2000000000) risk.marketCapRisk = "High";
             else if(rawFinancialData.marketCapRaw > 2000000000 && rawFinancialData.marketCapRaw <= 10000000000) risk.marketCapRisk = "Medium";
             else if(rawFinancialData.marketCapRaw > 10000000000) risk.marketCapRisk = "Low";
+
             setRiskData(risk);
         }
         
