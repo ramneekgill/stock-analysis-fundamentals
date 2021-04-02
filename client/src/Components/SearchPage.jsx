@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
 import AutoComplete from './getAutocomplete'
-import CompanyAnalysis from './CompanyAnalysis'
-import Cookies from 'js-cookie';
+
 import { useHistory } from "react-router-dom";
 
 
