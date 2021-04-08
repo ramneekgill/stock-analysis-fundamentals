@@ -1,34 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
 import AutoComplete from './getAutocomplete'
-
-import { useHistory } from "react-router-dom";
-
-
-
+import { Redirect } from "react-router-dom";
 
 var dict = require('../nyse-listed_json.json');
 
-
-const Auto = () => {
-  let history = useHistory();
+export default function SearchPage() {
   const [display, setDisplay] = useState(false);
   const [options, setOptions] = useState([]);
   const [search, setSearch] = useState("");
-  const [symbol, setSymbol] = useState("");
+  const [symbol, setSymbol] = useState(false);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
     setOptions(dict);
   }, []);
-
-  useEffect(() => {
-    if (symbol !== "") {
-        history.push("/about", symbol);
-    }
-  }, [symbol]);
-
-
 
   useEffect(() => {
     window.addEventListener("mousedown", handleClickOutside);
@@ -44,48 +30,34 @@ const Auto = () => {
     }
   };
 
-  const updatePokeDex = poke => {
-    setSearch(poke);
+  const updateSearchBar = symbol => {
+    setSearch(symbol);
     setDisplay(false);
   };
 
-//   const postCompany = () => {
-//         const csrftoken = Cookies.get('csrftoken');
-//         console.log(csrftoken);
-//         // Axios.post(`http://127.0.0.1:8000/financialdata/`, {
-//         //         'companyName': 'something'
-//         //     },
-//         //     {
-//         //         headers: {
-//         //         'Content-Type': 'application/json',
-//         //         'X-CSRFToken': csrftoken
-//         //         },
-//         //         withCredentials: true,
-//         //     }
-//         // )
-//         // .then(res => <CompanyAnalysis companyData=res />)
-//         // .catch(error => console.error(error))
-
-//         FinancialDataService.create({'Symbol': search})
-//         .then(res => setSymbol(res));
-//     }
-
+  if(symbol){
+    var url = "/about/" + String(symbol);
+    return <Redirect to={url}/>
+  }
 
   return (
+    <div className="App">
+    <h1>Search Company</h1>
+    <div className="auto-container"></div>
     <div ref={wrapperRef} className="flex-container flex-column pos-rel">
       <input
         id="auto"
         placeholder="Type to search"
         value={search}
         onChange={event => {
-          if(AutoComplete.get(event.target.value).length > 0){
+          if(AutoComplete.findMatches(event.target.value).length > 0){
             setDisplay(true);
           }
           else{
             setDisplay(false);
           }
           setSearch(event.target.value);
-          setOptions(AutoComplete.get(event.target.value))
+          setOptions(AutoComplete.findMatches(event.target.value))
         }}
         autoComplete="off"
       />
@@ -104,7 +76,7 @@ const Auto = () => {
             .map((value, i) => {
               return (
                 <div
-                  onClick={() => updatePokeDex(value["Symbol"])}
+                  onClick={() => updateSearchBar(value["Symbol"])}
                   className="option"
                   key={i}
                   tabIndex="0"
@@ -123,18 +95,6 @@ const Auto = () => {
       onClick={() => {setSymbol(search)}}
       />
     </div>
-    
-  );
-};
+    </div>);
 
-export default function SearchPage(props) {
-    return (
-        <div className="App">
-            <h1>Search Company</h1>
-            <div className="logo"></div>
-            <div className="auto-container">
-                <Auto />
-            </div>
-        </div>
-    );
   }

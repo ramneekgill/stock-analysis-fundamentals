@@ -6,11 +6,9 @@ function App() {
   return (
     <main className="container">
       <Switch>
-        <Route path="/about">
-          <CompanyAnalysis />
+        <Route path="/about/:symbol" component={CompanyAnalysis}>
         </Route>
-        <Route path="/search">
-          <SearchPage />
+        <Route path="/search" component={SearchPage}>
         </Route>
         <Redirect exact from="/" to="/search" />
       </Switch>

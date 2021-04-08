@@ -42,7 +42,10 @@ class FinancialDataView(TemplateView):
 
         #YAHOO FINANCE API
         url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
-        querystring = {"symbol":json_data['Symbol'],"region":"US"}
+        try:
+            querystring = {"symbol":json_data['Symbol'],"region":"US"}
+        except:
+            return HttpResponse("Symbol not recognized")
         headers = {
             'x-rapidapi-key': "098911c84amsh858307b7eaebf6cp1e62dfjsnd559913a493e",
             'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
