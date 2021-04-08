@@ -37,7 +37,7 @@ export default function SearchPage() {
 
   if(symbol){
     var url = "/about/" + String(symbol);
-    return <Redirect to={url}/>
+    return <Redirect push to={url}/>
   }
 
   return (
