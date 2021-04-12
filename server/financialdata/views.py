@@ -10,33 +10,7 @@ import math
 
 # Create your views here.
 class FinancialDataView(TemplateView):
-    template_name = 'financialdata.html'
-
-    def get_context_data(self, **kwargs):
-        if self.request.method == "OPTIONS":
-            print("Post clicked, here is data")
-            print(self.request.data)
-        context = super().get_context_data(**kwargs)
-        # url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
-        # print("this is the method:")
-        # print(self.request.method)
-        # querystring = {"symbol":"ALLD","region":"US"}
-
-        # headers = {
-        #     'x-rapidapi-key': "098911c84amsh858307b7eaebf6cp1e62dfjsnd559913a493e",
-        #     'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
-        #     }
-
-        # response = requests.request("GET", url, headers=headers, params=querystring).json()
-
-        # context['marketCap'] = response['price']['shortName']
-
-        return context
-
     def post(self, request, *args, **kwargs):
-        # serializer = self.get_serializer(data=request.data)
-        # headers = self.get_success_headers(request.data)
-        # return Response(request.data, status=status.HTTP_201_CREATED, headers=headers)
         json_data = json.loads(request.body)
         company_valuation = {}
 
@@ -78,8 +52,6 @@ class FinancialDataView(TemplateView):
             if ms_response.status_code == 200:
                 return HttpResponse("empty")
 
-        # print(ms_response['Expanded']['rows'][1]['datum'][10])
-        # print(type(ms_response['Collapsed']['rows'][1]['datum'][10]))
         company_valuation['Summary'] = yf_response['summaryProfile']['longBusinessSummary']
         company_valuation['company_name'] = yf_response['price']['shortName']
         company_valuation['MarketCap_Raw'] = yf_response['price']['marketCap']['raw']
@@ -130,34 +102,7 @@ class FinancialDataView(TemplateView):
         if(company_valuation['ROE_raw'] < 0): company_valuation['ROE_Risk'] = 'High'
         elif(company_valuation['ROE_raw'] < 0.1): company_valuation['ROE_Risk'] = 'Medium'
         elif(company_valuation['ROE_raw'] >= 0.1): company_valuation['ROE_Risk'] = 'Low'
-        #print(company_valuation)
 
-        
         return JsonResponse(company_valuation)
-
-
-
-    # @csrf_exempt
-    # def post(self, request, *args, **kwargs):
-    #         print("it worked")
-    #         return "good"
-
-
-
-# def test_func():
-#     url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary"
-
-#     querystring = {"symbol":"AMRN","region":"US"}
-
-#     headers = {
-#         'x-rapidapi-key': "098911c84amsh858307b7eaebf6cp1e62dfjsnd559913a493e",
-#         'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com"
-#         }
-
-#     response = requests.request("GET", url, headers=headers, params=querystring).json()
-#     #obj = response.json()
-#     print(response['price']['marketCap']['raw'])
-
-# test_func()
 
 
