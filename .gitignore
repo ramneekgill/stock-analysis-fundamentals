@@ -1,11 +1,3 @@
 client/.eslintcache
-server/financialdata/__pycache__/__init__.cpython-39.pyc
-server/financialdata/__pycache__/admin.cpython-39.pyc
-server/financialdata/__pycache__/models.cpython-39.pyc
-server/financialdata/__pycache__/urls.cpython-39.pyc
-server/financialdata/__pycache__/views.cpython-39.pyc
-server/financialdata/migrations/__pycache__/__init__.cpython-39.pyc
-server/server/__pycache__/__init__.cpython-39.pyc
-server/server/__pycache__/settings.cpython-39.pyc
-server/server/__pycache__/urls.cpython-39.pyc
-server/server/__pycache__/wsgi.cpython-39.pyc
+server/financialdata/
+server/server/__pycache__/
