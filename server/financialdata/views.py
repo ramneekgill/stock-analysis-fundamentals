@@ -1,15 +1,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseServerError
-import json
-import requests
-from rest_framework.viewsets import ModelViewSet
+from django.middleware.csrf import get_token
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from rest_framework.viewsets import ModelViewSet
+import json
+import requests
 import math
 
 # Create your views here.
 class FinancialDataView(TemplateView):
+    def get(self, request):
+        return JsonResponse({'csrfToken': get_token(request)})
+    
     def post(self, request, *args, **kwargs):
         json_data = json.loads(request.body)
         company_valuation = {}
