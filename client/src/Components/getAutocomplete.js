@@ -1,5 +1,5 @@
 var PrefixMatch = require('./autoComplete');
-var dict = require('../nyse-listed_json.json');
+var dict = require('../wilshire5000.json');
 
 var ts = new PrefixMatch("Company Name");
 ts.createPrefixTree(dict);

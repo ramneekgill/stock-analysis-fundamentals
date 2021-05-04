@@ -3,7 +3,7 @@ import "../App.css";
 import AutoComplete from './getAutocomplete'
 import { Redirect } from "react-router-dom";
 
-var dict = require('../nyse-listed_json.json');
+var dict = require('../wilshire5000.json');
 
 export default function SearchPage() {
   const [display, setDisplay] = useState(false);
